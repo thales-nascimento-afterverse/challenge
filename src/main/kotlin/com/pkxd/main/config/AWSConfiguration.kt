@@ -9,8 +9,8 @@ import java.net.URI
 
 
 object AWSConfiguration {
-    val dynamoDBClient: DynamoDbAsyncClient = DynamoDbAsyncClient.builder()
-        //.region(Region.US_EAST_1)
-        .endpointOverride(URI.create("http://localhost:8042"))
-        .build()
+  val dynamoDBClient: DynamoDbAsyncClient = DynamoDbAsyncClient.builder()
+    //.region(Region.US_EAST_1)
+    .endpointOverride(URI.create("http://localhost:8042"))
+    .build()
 }

@@ -5,7 +5,7 @@ import com.pkxd.infra.dynamoDB.DynamoDBRepository
 import com.pkxd.infra.uuid.UUIDGenerator
 
 object Configuration {
-    private val dynamoDBRepository = DynamoDBRepository(AWSConfiguration.dynamoDBClient)
-    private val uuiGenerator = UUIDGenerator
-    val createProfileUseCase: CreateProfileUseCase = CreateProfileUseCase(dynamoDBRepository, uuiGenerator)
+  private val dynamoDBRepository = DynamoDBRepository(AWSConfiguration.dynamoDBClient)
+  private val uuiGenerator = UUIDGenerator
+  val createProfileUseCase: CreateProfileUseCase = CreateProfileUseCase(dynamoDBRepository, uuiGenerator)
 }

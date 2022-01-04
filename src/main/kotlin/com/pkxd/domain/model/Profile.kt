@@ -1,3 +1,5 @@
 package com.pkxd.domain.model
 
-class Profile(val id: String, val nickname: String, val email: String)
+import java.util.*
+
+class Profile(val id: UUID, val nickname: String, val email: String)

@@ -7,10 +7,10 @@ import com.pkxd.dtos.CreateProfileRequestDTO
 import com.pkxd.dtos.CreateProfileResponseDTO
 
 class CreateProfileUseCase(private val profileRepository: ProfileRepository, private val idGenerator: IdGenerator)  {
-    suspend fun execute(profileDTO: CreateProfileRequestDTO): CreateProfileResponseDTO{
-        val newId = idGenerator.generate()
-        val profile = Profile(newId, profileDTO.nickname, profileDTO.email)
-        profileRepository.add(profile)
-        return CreateProfileResponseDTO(newId)
-    }
+  suspend fun execute(profileDTO: CreateProfileRequestDTO): CreateProfileResponseDTO{
+    val newId = idGenerator.generate()
+    val profile = Profile(newId, nickname = profileDTO.nickname, email = profileDTO.email)
+    profileRepository.add(profile)
+    return CreateProfileResponseDTO(newId.toString())
+  }
 }
