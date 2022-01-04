@@ -1,5 +1,6 @@
 package com.pkxd
 
+import com.pkxd.main.errors.exceptions
 import io.ktor.application.*
 import com.pkxd.main.routes.profileRoutes
 import io.ktor.features.*
@@ -27,7 +28,7 @@ fun Application.module() {
     }
 
     install(StatusPages) {
-
+        exceptions()
     }
 
     routing {
