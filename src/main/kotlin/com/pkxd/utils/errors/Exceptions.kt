@@ -1,13 +1,15 @@
-package com.pkxd.main.errors
+package com.pkxd.utils.errors
 
-import io.ktor.application.*
+import io.ktor.application.call
 import io.ktor.features.*
-import io.ktor.http.*
-import io.ktor.response.*
+import io.ktor.http.HttpStatusCode
+import io.ktor.response.respond
 import kotlinx.serialization.SerializationException
+import org.slf4j.Logger
 
-fun StatusPages.Configuration.exceptions() {
+fun StatusPages.Configuration.exceptions(logger: Logger) {
   exception<SerializationException> {
+    logger.warn("Failed to process request {}: {}", call.request.toLogString(), it.message, it)
     call.respond(
       HttpStatusCode.BadRequest,
       ErrorResponse(HttpStatusCode.BadRequest, "Required fields are missing")
@@ -15,7 +17,7 @@ fun StatusPages.Configuration.exceptions() {
   }
 
   exception<Throwable> {
-    println("${it.printStackTrace()}")
+    logger.warn("Failed to process request {}: {}", call.request.toLogString(), it.message, it)
     call.respond(
       HttpStatusCode.InternalServerError,
       ErrorResponse(HttpStatusCode.InternalServerError, it.message ?: "")

@@ -20,5 +20,6 @@ gradle-app.setting
 .classpath
 .idea
 .DS_Storeß
+.DS_Store
 dynamodb-volume/
 

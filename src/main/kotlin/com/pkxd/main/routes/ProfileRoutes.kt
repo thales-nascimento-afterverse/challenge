@@ -2,18 +2,19 @@ package com.pkxd.main.routes
 
 import com.pkxd.dtos.CreateProfileRequestDTO
 import com.pkxd.main.config.Configuration.createProfileUseCase
-import io.ktor.application.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.application.Application
+import io.ktor.application.call
+import io.ktor.request.receive
+import io.ktor.response.respondText
+import io.ktor.response.respond
+import io.ktor.routing.routing
+import io.ktor.routing.route
+import io.ktor.routing.get
+import io.ktor.routing.post
 
 fun Application.profileRoutes() {
   routing {
     route("profile"){
-      get("{id}") {
-        call.respondText("Teste Rotas arquivo")
-      }
-
       post {
         val profileDTO = call.receive<CreateProfileRequestDTO>()
         val profileCreated = createProfileUseCase.execute(profileDTO)

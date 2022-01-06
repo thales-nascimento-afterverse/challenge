@@ -1,7 +1,7 @@
-package com.pkxd.main.errors
+package com.pkxd.utils.errors
 
-import io.ktor.http.*
-import io.ktor.http.content.*
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.content.OutgoingContent
 
 data class ErrorResponse(
   override val status: HttpStatusCode,

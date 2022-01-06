@@ -1,4 +1,4 @@
-package com.pkxd.data.usecases
+package com.pkxd.data.usecases.profile
 
 import com.pkxd.data.interfaces.idGenerator.IdGenerator
 import com.pkxd.data.interfaces.repository.ProfileRepository

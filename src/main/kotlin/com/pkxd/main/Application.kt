@@ -1,12 +1,17 @@
 package com.pkxd
 
-import com.pkxd.main.errors.exceptions
-import io.ktor.application.*
 import com.pkxd.main.routes.profileRoutes
-import io.ktor.features.*
+import com.pkxd.utils.errors.exceptions
+import com.pkxd.utils.logging.logger
+import io.ktor.application.*
+import io.ktor.features.CORS
+import io.ktor.features.ContentNegotiation
+import io.ktor.features.StatusPages
 import io.ktor.http.*
-import io.ktor.routing.*
-import io.ktor.serialization.*
+import io.ktor.routing.routing
+import io.ktor.serialization.json
+
+val logger = logger("com.pkxd.main")
 
 fun main(args: Array<String>): Unit =
   io.ktor.server.netty.EngineMain.main(args)
@@ -28,7 +33,7 @@ fun Application.module() {
   }
 
   install(StatusPages) {
-    exceptions()
+    exceptions(logger)
   }
 
   routing {
