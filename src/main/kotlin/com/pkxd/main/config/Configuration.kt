@@ -1,11 +1,24 @@
 package com.pkxd.main.config
 
+import com.pkxd.data.usecases.product.CreateProductUseCase
 import com.pkxd.data.usecases.profile.CreateProfileUseCase
-import com.pkxd.infra.dynamoDB.DynamoDBRepository
+import com.pkxd.infra.dynamoDB.DynamoDBProductsRepository
+import com.pkxd.infra.dynamoDB.DynamoDBProfileRepository
 import com.pkxd.infra.uuid.UUIDGenerator
+import com.typesafe.config.ConfigFactory
 
 object Configuration {
-  private val dynamoDBRepository = DynamoDBRepository(AWSConfiguration.dynamoDBClient)
+  private val config = System.getenv()["ENVIRONMENT_MODE"].let {
+    ConfigFactory.load(it)
+  }
   private val uuiGenerator = UUIDGenerator
-  val createProfileUseCase: CreateProfileUseCase = CreateProfileUseCase(dynamoDBRepository, uuiGenerator)
+  private val dynamoDBProfileRepository =
+    DynamoDBProfileRepository(config = config, dynamoDbClient = AWSConfiguration.dynamoDBClient)
+  private val dynamoDBProductsRepository =
+    DynamoDBProductsRepository(config = config, dynamoDbClient = AWSConfiguration.dynamoDBClient)
+
+  val createProfileUseCase: CreateProfileUseCase =
+    CreateProfileUseCase(profileRepository = dynamoDBProfileRepository, idGenerator = uuiGenerator)
+  val createProductUseCase: CreateProductUseCase =
+    CreateProductUseCase(productRepository = dynamoDBProductsRepository, idGenerator = uuiGenerator)
 }

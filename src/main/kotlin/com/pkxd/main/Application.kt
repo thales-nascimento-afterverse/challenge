@@ -1,5 +1,7 @@
 package com.pkxd
 
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.pkxd.main.routes.productRoutes
 import com.pkxd.main.routes.profileRoutes
 import com.pkxd.utils.errors.exceptions
 import com.pkxd.utils.logging.logger
@@ -8,8 +10,8 @@ import io.ktor.features.CORS
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.StatusPages
 import io.ktor.http.*
+import io.ktor.jackson.*
 import io.ktor.routing.routing
-import io.ktor.serialization.json
 
 val logger = logger("com.pkxd.main")
 
@@ -29,7 +31,9 @@ fun Application.module() {
   }
 
   install(ContentNegotiation) {
-    json()
+    jackson {
+      enable(SerializationFeature.INDENT_OUTPUT)
+    }
   }
 
   install(StatusPages) {
@@ -38,5 +42,6 @@ fun Application.module() {
 
   routing {
     profileRoutes()
+    productRoutes()
   }
 }

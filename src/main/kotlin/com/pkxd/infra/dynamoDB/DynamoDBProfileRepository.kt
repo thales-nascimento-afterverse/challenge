@@ -2,12 +2,13 @@ package com.pkxd.infra.dynamoDB
 
 import com.pkxd.data.interfaces.repository.ProfileRepository
 import com.pkxd.domain.model.Profile
+import com.typesafe.config.Config
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest
 
-class DynamoDBRepository(private val dynamoDbClient: DynamoDbAsyncClient) : ProfileRepository {
-  private val tableName = "profile"
+class DynamoDBProfileRepository(config: Config, private val dynamoDbClient: DynamoDbAsyncClient) : ProfileRepository {
+  private val tableName = config.getString("dynamoDB.profile.table-name")
   override suspend fun add(profile: Profile) {
     try {
       val profileItem = mutableMapOf<String, AttributeValue>()

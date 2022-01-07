@@ -1,8 +1,5 @@
-package com.pkxd.dtos
+package com.pkxd.dtos.profile
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class CreateProfileRequestDTO (val nickname: String, val email: String)
 
 
