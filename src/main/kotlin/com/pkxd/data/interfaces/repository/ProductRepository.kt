@@ -1,6 +1,6 @@
 package com.pkxd.data.interfaces.repository
 
-import com.pkxd.domain.model.Product
+import com.pkxd.model.Product
 import java.util.UUID
 
 interface ProductRepository {

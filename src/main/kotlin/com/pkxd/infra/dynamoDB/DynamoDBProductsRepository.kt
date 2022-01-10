@@ -1,14 +1,12 @@
 package com.pkxd.infra.dynamoDB
 
 import com.pkxd.data.interfaces.repository.ProductRepository
-import com.pkxd.domain.model.Product
+import com.pkxd.model.Product
 import com.pkxd.utils.errors.EntityNotFoundException
 import com.typesafe.config.Config
 import kotlinx.coroutines.future.await
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient
-import software.amazon.awssdk.services.dynamodb.model.AttributeAction
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue
-import software.amazon.awssdk.services.dynamodb.model.AttributeValueUpdate
 import software.amazon.awssdk.services.dynamodb.model.ConditionalCheckFailedException
 import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest

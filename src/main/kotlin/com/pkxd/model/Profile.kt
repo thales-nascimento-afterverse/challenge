@@ -1,4 +1,4 @@
-package com.pkxd.domain.model
+package com.pkxd.model
 
 import java.util.UUID
 

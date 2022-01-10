@@ -1,6 +1,7 @@
 package com.pkxd
 
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.pkxd.main.routes.itemRoutes
 import com.pkxd.main.routes.productRoutes
 import com.pkxd.main.routes.profileRoutes
 import com.pkxd.utils.errors.exceptions
@@ -21,10 +22,8 @@ fun main(args: Array<String>): Unit =
 @Suppress("unused") // application.conf references the main function. This annotation prevents the IDE from marking it as unused.
 fun Application.module() {
   install(CORS) {
-    method(HttpMethod.Options)
     method(HttpMethod.Put)
     method(HttpMethod.Delete)
-    method(HttpMethod.Patch)
     header(HttpHeaders.Authorization)
     header("MyCustomHeader")
     anyHost() // @TODO: Don't do this in production if possible. Try to limit it.
@@ -43,5 +42,6 @@ fun Application.module() {
   routing {
     profileRoutes()
     productRoutes()
+    itemRoutes()
   }
 }

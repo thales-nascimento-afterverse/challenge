@@ -2,7 +2,7 @@ package com.pkxd.data.usecases.profile
 
 import com.pkxd.data.interfaces.idGenerator.IdGenerator
 import com.pkxd.data.interfaces.repository.ProfileRepository
-import com.pkxd.domain.model.Profile
+import com.pkxd.model.Profile
 import com.pkxd.dtos.profile.CreateProfileRequestDTO
 import com.pkxd.dtos.profile.CreateProfileResponseDTO
 

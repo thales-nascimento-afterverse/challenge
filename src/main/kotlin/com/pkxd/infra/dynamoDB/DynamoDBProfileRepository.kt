@@ -1,7 +1,7 @@
 package com.pkxd.infra.dynamoDB
 
 import com.pkxd.data.interfaces.repository.ProfileRepository
-import com.pkxd.domain.model.Profile
+import com.pkxd.model.Profile
 import com.typesafe.config.Config
 import software.amazon.awssdk.services.dynamodb.DynamoDbAsyncClient
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue
