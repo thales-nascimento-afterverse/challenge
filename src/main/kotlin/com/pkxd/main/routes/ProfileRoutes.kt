@@ -12,7 +12,7 @@ import io.ktor.routing.post
 
 fun Application.profileRoutes() {
   routing {
-    route("profile"){
+    route("profiles") {
       post {
         val profileDTO = call.receive<CreateProfileRequestDTO>()
         val profileCreated = createProfileUseCase.execute(profileDTO)
