@@ -7,6 +7,7 @@ import io.ktor.features.toLogString
 import io.ktor.http.HttpStatusCode
 import io.ktor.response.respond
 import org.slf4j.Logger
+import software.amazon.awssdk.services.dynamodb.model.DynamoDbException
 
 fun StatusPages.Configuration.exceptions(logger: Logger) {
   exception<IllegalArgumentException> {
@@ -35,6 +36,14 @@ fun StatusPages.Configuration.exceptions(logger: Logger) {
     call.respond(
       HttpStatusCode.BadRequest,
       ErrorResponse(HttpStatusCode.BadRequest, it.message ?: "Entity already exists")
+    )
+  }
+
+  exception<DynamoDbException> {
+    logger.warn("Failed to process request {}: {}", call.request.toLogString(), it.message, it)
+    call.respond(
+      HttpStatusCode.BadRequest,
+      ErrorResponse(HttpStatusCode.BadRequest, "It was not possible to process the request")
     )
   }
 

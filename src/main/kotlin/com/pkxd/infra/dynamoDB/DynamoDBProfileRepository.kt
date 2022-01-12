@@ -11,6 +11,7 @@ import software.amazon.awssdk.services.dynamodb.model.AttributeValue
 import software.amazon.awssdk.services.dynamodb.model.DynamoDbException
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest
+import software.amazon.awssdk.services.dynamodb.model.UpdateItemRequest
 
 class DynamoDBProfileRepository(config: Config, private val dynamoDbClient: DynamoDbAsyncClient) : ProfileRepository {
   private val tableName = config.getString("dynamoDB.profile.table-name")
@@ -42,6 +43,24 @@ class DynamoDBProfileRepository(config: Config, private val dynamoDbClient: Dyna
     } catch (e: DynamoDbException) {
       throw e.cause ?: e
     }
+  }
+
+  override suspend fun updateProfileWallet(profileId: UUID, wallet: Wallet) {
+    val itemKey = mapOf("id" to AttributeValue.builder().s(profileId.toString()).build())
+    val updateValues = mapOf(
+      ":coins" to AttributeValue.builder().n(wallet.coins.toString()).build(),
+      ":gems" to AttributeValue.builder().n(wallet.gems.toString()).build()
+    )
+
+    val updateItemRequest = UpdateItemRequest.builder()
+      .tableName(tableName)
+      .key(itemKey)
+      .updateExpression("ADD wallet.coins :coins, wallet.gems :gems")
+      .expressionAttributeValues(updateValues)
+      .conditionExpression("attribute_exists(id)")
+      .build()
+
+    dynamoDbClient.updateItem(updateItemRequest).await()
   }
 
   private fun Map<String, AttributeValue>.toProfile(): Profile {
