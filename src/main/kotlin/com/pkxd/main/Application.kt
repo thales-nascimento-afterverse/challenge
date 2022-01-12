@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.pkxd.main.routes.itemRoutes
 import com.pkxd.main.routes.productRoutes
 import com.pkxd.main.routes.profileRoutes
+import com.pkxd.main.routes.storeRoutes
 import com.pkxd.utils.errors.exceptions
 import com.pkxd.utils.logging.logger
 import io.ktor.application.*
@@ -43,5 +44,6 @@ fun Application.module() {
     profileRoutes()
     productRoutes()
     itemRoutes()
+    storeRoutes()
   }
 }

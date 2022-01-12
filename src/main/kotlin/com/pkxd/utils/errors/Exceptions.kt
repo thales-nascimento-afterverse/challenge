@@ -16,12 +16,26 @@ fun StatusPages.Configuration.exceptions(logger: Logger) {
 
   exception<MissingKotlinParameterException> {
     logger.warn("Failed to process request {}: {}", call.request.toLogString(), it.message, it)
-    call.respond(HttpStatusCode.BadRequest, ErrorResponse(HttpStatusCode.BadRequest, "Failed - Missing Params"))
+    call.respond(
+      HttpStatusCode.BadRequest,
+      ErrorResponse(HttpStatusCode.BadRequest, "Failed - Missing Params")
+    )
   }
 
   exception<EntityNotFoundException> {
     logger.warn("Failed to process request {}: {}", call.request.toLogString(), it.message, it)
-    call.respond(HttpStatusCode.BadRequest, ErrorResponse(HttpStatusCode.BadRequest, it.message ?: "Entity not found"))
+    call.respond(
+      HttpStatusCode.BadRequest,
+      ErrorResponse(HttpStatusCode.BadRequest, it.message ?: "Entity not found")
+    )
+  }
+
+  exception<EntityAlreadyExistsException> {
+    logger.warn("Failed to process request {}: {}", call.request.toLogString(), it.message, it)
+    call.respond(
+      HttpStatusCode.BadRequest,
+      ErrorResponse(HttpStatusCode.BadRequest, it.message ?: "Entity already exists")
+    )
   }
 
   exception<Throwable> {

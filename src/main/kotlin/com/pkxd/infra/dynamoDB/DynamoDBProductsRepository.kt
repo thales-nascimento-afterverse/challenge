@@ -13,6 +13,8 @@ import software.amazon.awssdk.services.dynamodb.model.PutItemRequest
 import software.amazon.awssdk.services.dynamodb.model.UpdateItemRequest
 import java.util.UUID
 import java.util.concurrent.CompletionException
+import software.amazon.awssdk.services.dynamodb.model.BatchGetItemRequest
+import software.amazon.awssdk.services.dynamodb.model.KeysAndAttributes
 
 class DynamoDBProductsRepository(config: Config, private val dynamoDbClient: DynamoDbAsyncClient) : ProductRepository {
   private val tableName = config.getString("dynamoDB.product.table-name")
@@ -22,7 +24,10 @@ class DynamoDBProductsRepository(config: Config, private val dynamoDbClient: Dyn
     productItem["coins"] = AttributeValue.builder().n(product.coins.toString()).build()
     productItem["gems"] = AttributeValue.builder().n(product.gems.toString()).build()
     productItem["price"] = AttributeValue.builder().n(product.price.toString()).build()
-    val putItemRequest = PutItemRequest.builder().tableName(tableName).item(productItem).build()
+    val putItemRequest = PutItemRequest.builder()
+      .tableName(tableName)
+      .item(productItem)
+      .build()
     dynamoDbClient.putItem(putItemRequest)
   }
 
@@ -69,5 +74,23 @@ class DynamoDBProductsRepository(config: Config, private val dynamoDbClient: Dyn
     } catch (e: ConditionalCheckFailedException) {
       throw EntityNotFoundException("Product ${product.id.toString()} not found")
     }
+  }
+
+  override suspend fun fetchProductsByIds(productsIds: List<UUID>): List<Product> {
+    val idsToMap = productsIds.map { mapOf("id" to AttributeValue.builder().s(it.toString()).build()) }
+    val productRequestItems = mapOf("product" to KeysAndAttributes.builder().keys(idsToMap).build())
+    val batchGetItemRequest = BatchGetItemRequest.builder().requestItems(productRequestItems).build()
+    return dynamoDbClient.batchGetItem(batchGetItemRequest).await().responses()[tableName]
+      .orEmpty()
+      .map { it.toProduct() }
+  }
+
+  private fun Map<String, AttributeValue>.toProduct(): Product {
+    return Product(
+      id = UUID.fromString(this["id"]?.s().toString()),
+      coins = this["coins"]?.n()?.toInt() ?: 0,
+      gems = this["gems"]?.n()?.toInt() ?: 0,
+      price = this["price"]?.n()?.toDouble() ?: 0.0
+    )
   }
 }

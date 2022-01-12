@@ -8,7 +8,12 @@ import java.util.UUID
 class UpdateProductUseCase(private val productRepository: ProductRepository) {
   suspend fun execute(id: UUID, updateProductDTO: UpdateProductRequestDTO) {
     val product =
-      Product(id, price = updateProductDTO.price, coins = updateProductDTO.coins, gems = updateProductDTO.gems)
+      Product(
+        id = id,
+        coins = updateProductDTO.coins,
+        gems = updateProductDTO.gems,
+        price = updateProductDTO.price
+      )
     productRepository.update(product)
   }
 }
